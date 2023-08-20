@@ -14,9 +14,6 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakartaee>9.1.0</jakartaee>
     </properties>
-    
-    
-    
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
