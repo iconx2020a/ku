@@ -19,6 +19,13 @@ import java.util.Scanner;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+// Make sure to import the following packages in your code
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;	
+
+
 public class Database {
 
     final int size = 3;
@@ -26,9 +33,22 @@ public class Database {
     private PreparedStatement ps;
     private ResultSet rs;
     private static Connection conn;
+    
+     String dbPassword = "dbpassword";
+     String dbUserName = "dbusername";
+     String dbURL = "dbusername";
+    Region region = Region.of("us-east-1");
+
+    GetSecretValueResponse getSecretValueResponse;
+    SecretsManagerClient client;
+     GetSecretValueRequest getSecretValueRequest;
 
     public Database() {
-        readFile();
+         client = SecretsManagerClient.builder()
+            .region(region)
+            .build();
+
+  
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -36,29 +56,47 @@ public class Database {
             System.out.println(e.toString() + "  we   have problem here");
 
         }
+        
+          try {
+        readFile();
+       
+    } catch (Exception e) {
+        // For a list of exceptions thrown, see
+        // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        throw e;
+    }
+
+  
     }
 
     private void readFile() {
         conf = new String[size];
-//Path pathOne = Paths.get("/src/main/resources/conf.txt");
-        try {
-            InputStream is = Database.class.getClassLoader().getResourceAsStream("conf.txt");
-            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader file = new BufferedReader(isr);
-            String line = null; // line read from file
-            int i = 0;
-            while ((line = file.readLine()) != null) {
-                conf[i++] = line;
-                System.out.println(line);
-            }
-
-            file.close();
-            isr.close();
-            is.close();
-        } catch (IOException e) {
-            System.out.println(e.toString());
-        }
+             getSecretValueRequest = GetSecretValueRequest.builder()
+            .secretId(dbURL)
+            .build();
+             getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
+              String secret = getSecretValueResponse.secretString();
+             System.out.println(secret);
+             conf[0]=secret;
+             
+             getSecretValueRequest = GetSecretValueRequest.builder()
+            .secretId(dbUserName)
+            .build();
+             getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
+             secret = getSecretValueResponse.secretString();
+             System.out.println(secret);
+             conf[1]=secret;
+             
+              
+             getSecretValueRequest = GetSecretValueRequest.builder()
+            .secretId(dbPassword)
+            .build();
+             getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
+             secret = getSecretValueResponse.secretString();
+             System.out.println(secret);
+             conf[2]=secret;
     }
+
 
     public void initializeConnection() {
         conn = getMySqlConnection();
