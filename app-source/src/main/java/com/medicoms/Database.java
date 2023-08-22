@@ -1,29 +1,40 @@
 package com.medicoms;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+import java.util.List;
+import java.util.Scanner;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 // Make sure to import the following packages in your code
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
- import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
- import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;	
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;	
 
 
 public class Database {
-
     final int size = 3;
     private String[] conf;
     private PreparedStatement ps;
     private ResultSet rs;
     private static Connection conn;
     
-     String dbPassword = "dbpassword";
-     String dbUserName = "dbusername";
-     String dbURL = "dbusername";
+     String dbPassword = "password";
+     String dbUserName = "name";
+     String dbURL = "dburl";
     Region region = Region.of("us-east-1");
 
     GetSecretValueResponse getSecretValueResponse;
@@ -35,7 +46,6 @@ public class Database {
             .region(region)
             .build();
 
-  
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -62,26 +72,38 @@ public class Database {
             .secretId(dbURL)
             .build();
              getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
-              String secret = getSecretValueResponse.secretString();
+             String secret = getSecretValueResponse.secretString();
              System.out.println(secret);
-             conf[0]=secret;
-             
+           
+             String [] parts = secret.split(":");
+             String [] values= parts[1].split("\"");
+             System.out.println(values[1]);
+            conf[0]=values[1];
+            
              getSecretValueRequest = GetSecretValueRequest.builder()
             .secretId(dbUserName)
             .build();
              getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
              secret = getSecretValueResponse.secretString();
+            
              System.out.println(secret);
-             conf[1]=secret;
+           
+            parts = secret.split(":");
+            values= parts[1].split("\"");
+             System.out.println(values[1]);
+             conf[1]=values[1];
              
               
-             getSecretValueRequest = GetSecretValueRequest.builder()
+            getSecretValueRequest = GetSecretValueRequest.builder()
             .secretId(dbPassword)
             .build();
              getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
              secret = getSecretValueResponse.secretString();
              System.out.println(secret);
-             conf[2]=secret;
+             parts = secret.split(":");
+            values= parts[1].split("\"");
+             System.out.println(values[1]);
+             conf[2]=values[1];
     }
 
 
@@ -91,8 +113,10 @@ public class Database {
 
     public Connection getMySqlConnection() {
         try {
+            System.out.println( "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
+                     "autoReconnect=true&useSSL=false" + "," + conf[1] +","+ conf[2]);
             return DriverManager.getConnection(
-             "jdbc:mysql://" + conf[0] + "/testdb?" + 
+             "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
                      "autoReconnect=true&useSSL=false", conf[1], conf[2]);
 
         } catch (SQLException e) {
@@ -152,4 +176,5 @@ public class Database {
         }
         return null;
     }
+    
 }
