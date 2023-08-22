@@ -1,4 +1,3 @@
-
 package com.secureapp;
 
 import java.io.IOException;
@@ -8,8 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name="SearchController", urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
 
+@WebServlet(name="SearchController", urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
 
 public class SearchController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -17,20 +16,17 @@ public class SearchController extends HttpServlet {
     public void init() throws ServletException {
         // Initialization database...
         db = new Database();
-        db.initializeConnection();
+       db.initializeConnection();
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest              request, HttpServletResponse
-     * response)
-     */
 protected void doPost(HttpServletRequest request,  HttpServletResponse
             response) throws ServletException, IOException {
-      
+       
         int userID = Integer.parseInt(request.getParameter("ID"));
         String firstName = request.getParameter("fname");
         String lastName = request.getParameter("lname");
         String password = request.getParameter("password");
+        
         String userAction = request.getServletPath()
                 != null ? request.getServletPath() : "";
         if (userAction.equals("/isadmin.do") && userID > 0 && password 
