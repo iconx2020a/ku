@@ -1,24 +1,15 @@
-package com.medicoms;
+package com.secureapp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import java.util.List;
 import java.util.Scanner;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-// Make sure to import the following packages in your code
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
@@ -58,8 +49,6 @@ public class Database {
         readFile();
        
     } catch (Exception e) {
-        // For a list of exceptions thrown, see
-        // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         throw e;
     }
 
