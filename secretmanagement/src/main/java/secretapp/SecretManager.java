@@ -45,8 +45,7 @@ public class SecretManager {
         readFile();
        
     } catch (Exception e) {
-        // For a list of exceptions thrown, see
-        // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        
         throw e;
     }
 initializeConnection();
@@ -100,11 +99,10 @@ initializeConnection();
 
     public Connection getMySqlConnection() {
         try {
-            System.out.println( "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
-                     "autoReconnect=true&useSSL=false" + "," + conf[1] +","+ conf[2]);
+            System.out.println( "jdbc:mysql://" + conf[0] + ":3306" + "/testdb" + 
+                    "," + conf[1] +","+ conf[2]);
             return DriverManager.getConnection(
-             "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
-                     "autoReconnect=true&useSSL=false", conf[1], conf[2]);
+           "jdbc:mysql://" + conf[0] + ":3306" + "/testdb" , conf[1], conf[2]);
 
         } catch (SQLException e) {
             System.out.println("SQL connection failure");
@@ -165,7 +163,9 @@ initializeConnection();
     }
     
     public static void main (String [ ] args){
-        new SecretManager();
+        SecretManager sm = new SecretManager();
+        sm.addUser(909090,"Bob", "Alice");
+        System.out.println(sm.doesUserExist(909090));
    
     }
 }
