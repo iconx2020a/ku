@@ -45,7 +45,6 @@
 
     </dependencies>
     
-    
     <build>
         <plugins>
             <plugin>
@@ -64,23 +63,6 @@
                 <version>3.4.0</version>
             </plugin>
             
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
            
             <plugin>
         <!-- Build an executable JAR -->
