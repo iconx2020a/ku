@@ -116,8 +116,7 @@ public class Database {
             System.out.println( "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
                      "autoReconnect=true&useSSL=false" + "," + conf[1] +","+ conf[2]);
             return DriverManager.getConnection(
-             "jdbc:mysql://" + conf[0] + ":3306" + "/testdb?" + 
-                     "autoReconnect=true&useSSL=false", conf[1], conf[2]);
+             "jdbc:mysql://" + conf[0] + ":3306" + "/testdb" , conf[1], conf[2]);
 
         } catch (SQLException e) {
             System.out.println("SQL connection failure");
