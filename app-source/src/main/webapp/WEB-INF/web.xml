@@ -10,7 +10,7 @@
   </welcome-file-list>
    <servlet>
     <servlet-name>SearchController</servlet-name>
-    <servlet-class>com.medicoms.SearchController</servlet-class>
+    <servlet-class>com.secureapp.SearchController</servlet-class>
 </servlet>
 <servlet-mapping>
     <servlet-name>SearchController</servlet-name>
