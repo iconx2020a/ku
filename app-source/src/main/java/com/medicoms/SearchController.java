@@ -1,4 +1,4 @@
-package com.medicoms;
+package com.secureapp;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -8,13 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name="SearchController", urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
-//@WebServlet(urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
-//@WebServlet(names = {"finduser.do", "adduser.do", "isadmin.do"}, urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
-//@WebServlet(name={"finduser", "adduser", "isadmin"}, 
-  //      urlPatterns = {"/finduser.do", "/adduser.do", "/isadmin.do"})
-//@WebServlet(name="finduser", urlPatterns = "/finduser.do")
-//@WebServlet(name="adduser", urlPatterns = "/adduser.do")
-//@WebServlet(name="isadmin", urlPatterns = "/isadmin.do")
+
 
 public class SearchController extends HttpServlet {
     private static final long serialVersionUID = 1L;
