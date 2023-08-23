@@ -31,15 +31,6 @@ public class SecretManager {
          client = SecretsManagerClient.builder()
             .region(region)
             .build();
-
-  
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.toString() + "  we   have problem here");
-
-        }
         
           try {
         readFile();
@@ -48,12 +39,10 @@ public class SecretManager {
         
         throw e;
     }
-initializeConnection();
   
     }
 
     private void readFile() {
-        conf = new String[size];
              getSecretValueRequest = GetSecretValueRequest.builder()
             .secretId(dbURL)
             .build();
@@ -61,11 +50,6 @@ initializeConnection();
              String secret = getSecretValueResponse.secretString();
              System.out.println(secret);
            
-             String [] parts = secret.split(":");
-             String [] values= parts[1].split("\"");
-             System.out.println(values[1]);
-            conf[0]=values[1];
-            
              getSecretValueRequest = GetSecretValueRequest.builder()
             .secretId(dbUserName)
             .build();
@@ -73,12 +57,6 @@ initializeConnection();
              secret = getSecretValueResponse.secretString();
             
              System.out.println(secret);
-           
-            parts = secret.split(":");
-            values= parts[1].split("\"");
-             System.out.println(values[1]);
-             conf[1]=values[1];
-             
               
             getSecretValueRequest = GetSecretValueRequest.builder()
             .secretId(dbPassword)
@@ -86,86 +64,10 @@ initializeConnection();
              getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
              secret = getSecretValueResponse.secretString();
              System.out.println(secret);
-             parts = secret.split(":");
-            values= parts[1].split("\"");
-             System.out.println(values[1]);
-             conf[2]=values[1];
+
     }
-
-
-    public void initializeConnection() {
-        conn = getMySqlConnection();
-    }
-
-    public Connection getMySqlConnection() {
-        try {
-            System.out.println( "jdbc:mysql://" + conf[0] + ":3306" + "/testdb" + 
-                    "," + conf[1] +","+ conf[2]);
-            return DriverManager.getConnection(
-           "jdbc:mysql://" + conf[0] + ":3306" + "/testdb" , conf[1], conf[2]);
-
-        } catch (SQLException e) {
-            System.out.println("SQL connection failure");
-        }
-        return null;
-    }
-
-    public void addUser(int id, String fName, String lName) {
-        String sql = "insert into Person values (?,?,?)";
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setString(2, fName);
-            ps.setString(3, lName);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("SQL execution    failure");
-        }
-    }
-
-    public boolean doesUserExist(int id) {
-        String sql = "select * from Person where ID=?";
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            System.out.println("SQL execution failure");
-        }
-        return false;
-    }
-
-    public boolean isAdmin(int id, String password) {
-        String sql = "select * from Admin where ID=? and Password=?";
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setString(2, password);
-            rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            System.out.println("SQL execution failure");
-        }
-        return false;
-    }
-
-    public ResultSet allUsers() {
-        String sql = "select * from Person";
-        try {
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-            return rs;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
-        return null;
-    }
-    
     public static void main (String [ ] args){
-        SecretManager sm = new SecretManager();
-        sm.addUser(909090,"Bob", "Alice");
-        System.out.println(sm.doesUserExist(909090));
+      new SecretManager();
    
     }
 }
