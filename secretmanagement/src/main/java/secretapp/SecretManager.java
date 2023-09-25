@@ -4,8 +4,8 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;	
 public class SecretManager {
-     String dbPassword = "password";
-     String dbUserName = "name";
+     String dbPassword = "dbpassword";
+     String dbUserName = "dbusername";
      String dbURL = "dburl";
     Region region = Region.of("us-east-1");
     GetSecretValueResponse getSecretValueResponse;
