@@ -23,8 +23,8 @@ public class Database {
     private ResultSet rs;
     private static Connection conn;
     
-     String dbPassword = "password";
-     String dbUserName = "name";
+     String dbPassword = "dbpassword";
+     String dbUserName = "dbusername";
      String dbURL = "dburl";
     Region region = Region.of("us-east-1");
 
